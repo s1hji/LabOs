@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <getopt.h>
 
 void print_usage() {
     printf("Usage: mycat [-n] [-b] [-E] [file...]\n");
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]) {
     int show_end = 0;
     int opt;
     
-    
+    // Parse command line options using getopt
     while ((opt = getopt(argc, argv, "nbE")) != -1) {
         switch (opt) {
             case 'n':
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
     if (optind >= argc) {
         process_file(stdin, show_line_numbers, number_non_empty, show_end);
     } else {
-        
+        // Process each file
         for (int i = optind; i < argc; i++) {
             FILE *file = fopen(argv[i], "r");
             if (file == NULL) {
