@@ -13,7 +13,7 @@ void search_pattern(FILE *file, const char *pattern) {
     int line_number = 1;
     
     while (fgets(line, sizeof(line), file)) {
-        // Check if pattern exists in line
+        
         if (strstr(line, pattern) != NULL) {
             printf("%s", line);
         }
