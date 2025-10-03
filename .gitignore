@@ -1,0 +1,5 @@
+mycat
+mygrep
+*.o
+*~
+*.bak
