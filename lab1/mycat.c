@@ -17,34 +17,40 @@ void process_file(FILE *file, int show_line_numbers, int number_non_empty, int s
     int line_number = 1;
     
     while (fgets(line, sizeof(line), file)) {
-    
+        int is_empty = 0;
         size_t len = strlen(line);
+        
+  
+        if (len == 1 && line[0] == '\n') {
+            is_empty = 1;
+        }
+        
+      
         if (len > 0 && line[len-1] == '\n') {
             line[len-1] = '\0';
             len--;
         }
         
-        
+     
         if (number_non_empty) {
-            if (len > 0) {
-                printf("%6d\t", line_number++);
-            } else if (show_line_numbers) {
+            if (!is_empty) {
                 printf("%6d\t", line_number++);
             }
         }
-        
+     
         else if (show_line_numbers) {
             printf("%6d\t", line_number++);
         }
         
-        
+  
         printf("%s", line);
         
-       
+     
         if (show_end) {
             printf("$");
         }
         
+    
         printf("\n");
     }
 }
@@ -55,7 +61,7 @@ int main(int argc, char *argv[]) {
     int show_end = 0;
     int opt;
     
-    // Parse command line options using getopt
+   
     while ((opt = getopt(argc, argv, "nbE")) != -1) {
         switch (opt) {
             case 'n':
@@ -73,18 +79,21 @@ int main(int argc, char *argv[]) {
         }
     }
     
+
+    if (show_line_numbers && number_non_empty) {
+        fprintf(stderr, "Error: flags -n and -b cannot be used together\n");
+        return 1;
+    }
     
     if (optind >= argc) {
         process_file(stdin, show_line_numbers, number_non_empty, show_end);
     } else {
-        // Process each file
         for (int i = optind; i < argc; i++) {
             FILE *file = fopen(argv[i], "r");
             if (file == NULL) {
                 fprintf(stderr, "mycat: cannot open file '%s'\n", argv[i]);
                 continue;
             }
-            
             process_file(file, show_line_numbers, number_non_empty, show_end);
             fclose(file);
         }
