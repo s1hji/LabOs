@@ -73,8 +73,8 @@ int main(int argc, char *argv[]) {
                 char owner[256], group[256];
                 struct passwd *pwd = getpwuid(st.st_uid);
                 struct group *grp = getgrgid(st.st_gid);
-                snprintf(owner, sizeof(owner), "%s", pwd ? pwd->pw_name : "unknown");
-                snprintf(group, sizeof(group), "%s", grp ? grp->gr_name : "unknown");
+                snprintf(owner, sizeof(owner), "%s", pwd ? pwd->pw_name : "uid");
+                snprintf(group, sizeof(group), "%s", grp ? grp->gr_name : "uid");
                 int nlinks_width = snprintf(NULL, 0, "%lu", (unsigned long)st.st_nlink);
                 int owner_width = strlen(owner);
                 int group_width = strlen(group);
